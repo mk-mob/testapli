@@ -1,0 +1,7 @@
+{
+  "name": "testapli",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react"
+}
