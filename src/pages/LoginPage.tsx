@@ -12,10 +12,15 @@ import {
   IonText,
   IonPage,
   IonContent,
+  IonModal,
 } from "@ionic/react";
 import { useHistory } from "react-router-dom";
-
+import {usePlatform} from '@ionic/react-hooks/platform';
 import { observer, MobXProviderContext } from "mobx-react";
+import { EmailComposer } from '@ionic-native/email-composer';
+
+const emailComposer = EmailComposer;
+
 
 const LoginPage = () => {
   const { store } = React.useContext(MobXProviderContext);
@@ -24,6 +29,9 @@ const LoginPage = () => {
   const [email, setEmail] = useState("test@test.com");
   const [password, setPassword] = useState("");
   const [errorInfo, setErrorInfo] = useState({showErrorToast: false, errMsg: ""});
+  const [showModal, setShowModal] = useState(false);
+
+  const { platform } = usePlatform();
   console.log("LoginPage!!");
   /**
    *
@@ -41,18 +49,65 @@ const LoginPage = () => {
     }
   };
   
-  return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar color="light">
-          <IonButtons slot="start" />
-          <IonTitle>Login</IonTitle>
-        </IonToolbar>
-      </IonHeader>
-      <IonContent className="ion-padding">
-        <IonText color="danger"  style={{ fontWeight: "500" }}>
-          {initializationError && initializationError.message}
-        </IonText>
+  
+
+
+  const Content_A =()=>{
+    return (
+      <div className="content_A">
+
+      <div style={{display:'flex',marginTop:20}}>
+        <IonLabel >メールアドレス: &nbsp;</IonLabel>
+        <input
+          type="email"
+          style={{  width:'200px',height:30 }}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          name="email"
+        />
+      </div>
+      <div style={{display:'flex',marginTop:20}}>
+        <IonLabel >パスワード:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</IonLabel>
+        <input
+        style={{  width:'200px',height:30 }}
+          type="password"
+          onChange={(e) => {
+            setPassword(e.target.value);
+          }}
+          name="password"
+        />
+      </div>
+        <div style={{ padding: 10, paddingTop: 20 }}>
+          <IonButton
+            color ="dark"
+            style={{ margin: 14 }}
+            onClick={(e) => {
+              if (!e.currentTarget) {
+                return;
+              }
+              e.preventDefault();
+              _doLogin();
+            }}
+          >
+            {isAuth ? "ログインしています" : "ログイン"}
+          </IonButton>
+          <IonButton
+           color="dark"
+            style={{ margin: 14 }}
+            onClick={(e) => setShowModal(true) }
+          >
+            Create Account
+          </IonButton>
+        </div>
+       
+      </div>
+
+    );
+  }
+  const Content_B =()=>{
+    return (
+      <div className="content_B">
 
         <IonItem>
           <IonLabel position="floating">Email Address</IonLabel>
@@ -62,7 +117,6 @@ const LoginPage = () => {
               setEmail(e.detail.value);
             }}
             name="email"
-            
           />
         </IonItem>
         <IonItem>
@@ -77,7 +131,7 @@ const LoginPage = () => {
         </IonItem>
         <div style={{ padding: 10, paddingTop: 20 }}>
           <IonButton
-            expand="full"
+            expand="block"
             style={{ margin: 14 }}
             onClick={(e) => {
               if (!e.currentTarget) {
@@ -87,22 +141,75 @@ const LoginPage = () => {
               _doLogin();
             }}
           >
-            {isAuth ? "Logged In" : "Login"}
+            {isAuth ? "ログインしています" : "ログイン"}
           </IonButton>
           <IonButton
-            expand="full"
+            expand="block"
             style={{ margin: 14 }}
-            onClick={(e) => {
-              e.preventDefault();
-              history.push("/register");
-            }}
+            onClick={(e) => setShowModal(true) }
           >
-            Create Account
+            新規アカウントを作成
           </IonButton>
         </div>
-        <div style={{ padding: 10, paddingTop: 20 }}>
-        
-        </div>  
+
+      </div>
+    );
+  }
+
+  const RegisterModal =()=>{
+    return(
+    <IonModal isOpen={showModal} cssClass='regist-modal-class'>
+    <p>登録するには、メールアドレスを送信してください</p>
+    <div style={{display:'flex'}}>
+        <IonLabel >メールアドレス: &nbsp;</IonLabel>
+        <input
+          type="email"
+          style={{  width:'200px',height:30 }}
+          onChange={(e) => {
+            setEmail(e.target.value);
+          }}
+          name="email"
+        />
+      </div>
+      <div style={{display:'flex',marginTop:20}}>
+    <IonButton onClick={() => sendMail()}>送信</IonButton>
+    <IonButton onClick={() => setShowModal(false)}>キャンセル</IonButton>
+    </div>
+    <div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
+  </IonModal>
+
+    );
+  }
+
+  const sendMail =() =>{
+    let intro_text = email+"様、会員登録の申込みありがとうございます。次のリンクから会員登録を行ってください。";
+    let link = 'http://purelabo777.netlify.app/register'
+    let conf_text ="このメールに心当たりがない場合、削除してください";
+    let mail_body = intro_text + '<br>' + link +'<br>' + conf_text;
+    let sendmail = {
+      to: email,
+      subject: '会員登録用メール',
+      body: mail_body,
+      isHtml: true
+    }
+    emailComposer.open(sendmail);
+    setShowModal(false);
+  }
+
+  return (
+    <IonPage>
+      <IonHeader>
+        <IonToolbar color="light">
+          <IonButtons slot="start" />
+          <IonTitle>Login</IonTitle>
+        </IonToolbar>
+      </IonHeader>
+      <IonContent className="ion-padding">
+      <IonText color="danger"  style={{ fontWeight: "500" }}>
+          {initializationError && initializationError.message}
+        </IonText>
+        {platform=='web'?<Content_A/>:<Content_B/>}
+        <RegisterModal />
         <IonToast
           color="danger"
           isOpen={errorInfo.showErrorToast}
@@ -110,6 +217,7 @@ const LoginPage = () => {
           message={errorInfo.errMsg}
           duration={2000}
         />
+         <div style={{ padding: 10, paddingTop: 20 }} />
       </IonContent>
     </IonPage>
   );
