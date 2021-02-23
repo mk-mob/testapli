@@ -22,11 +22,11 @@ import { EmailComposer } from '@ionic-native/email-composer';
 const emailComposer = EmailComposer;
 
 
-const LoginPage = () => {
+const LoginPage:React.FC = () => {
   const { store } = React.useContext(MobXProviderContext);
   let { isAuth, initializationError } = store;
   const history = useHistory();
-  const [email, setEmail] = useState("test@test.com");
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [errorInfo, setErrorInfo] = useState({showErrorToast: false, errMsg: ""});
   const [showModal, setShowModal] = useState(false);
@@ -52,136 +52,142 @@ const LoginPage = () => {
   
 
 
-  const Content_A =()=>{
-    return (
-      <div className="content_A">
+  // const Content_A =()=>{
+  //   return (
+  //     <div className="content_A">
 
-      <div style={{display:'flex',marginTop:20}}>
-        <IonLabel >メールアドレス: &nbsp;</IonLabel>
-        <input
-          type="email"
-          style={{  width:'200px',height:30 }}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-          name="email"
-        />
-      </div>
-      <div style={{display:'flex',marginTop:20}}>
-        <IonLabel >パスワード:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</IonLabel>
-        <input
-        style={{  width:'200px',height:30 }}
-          type="password"
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          name="password"
-        />
-      </div>
-        <div style={{ padding: 10, paddingTop: 20 }}>
-          <IonButton
-            color ="dark"
-            style={{ margin: 14 }}
-            onClick={(e) => {
-              if (!e.currentTarget) {
-                return;
-              }
-              e.preventDefault();
-              _doLogin();
-            }}
-          >
-            {isAuth ? "ログインしています" : "ログイン"}
-          </IonButton>
-          <IonButton
-           color="dark"
-            style={{ margin: 14 }}
-            onClick={(e) => setShowModal(true) }
-          >
-            Create Account
-          </IonButton>
-        </div>
+  //     <div style={{display:'flex',marginTop:20}}>
+  //       <IonLabel >メールアドレス: &nbsp;</IonLabel>
+  //       <input
+  //         type="email"
+  //         style={{  width:'200px',height:30 }}
+  //         onChange={(e) => {
+  //           setEmail(e.target.value);
+  //         }}
+  //         value ={email}
+  //         name="email"
+  //       />
+  //     </div>
+  //     <div style={{display:'flex',marginTop:20}}>
+  //       <IonLabel >パスワード:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</IonLabel>
+  //       <input
+  //         style={{  width:'200px',height:30 }}
+  //         type="password"
+  //         onChange={(e) => {
+  //           setPassword(e.target.value);
+  //         }}
+  //         name="password"
+  //         value={password}
+  //       />
+  //     </div>
+  //       <div style={{ padding: 10, paddingTop: 20 }}>
+  //         <IonButton
+  //           color ="dark"
+  //           style={{ margin: 14 }}
+  //           onClick={(e) => {
+  //             if (!e.currentTarget) {
+  //               return;
+  //             }
+  //             e.preventDefault();
+  //             _doLogin();
+  //           }}
+  //         >
+  //           {isAuth ? "ログインしています" : "ログイン"}
+  //         </IonButton>
+  //         <IonButton
+  //          color="dark"
+  //           style={{ margin: 14 }}
+  //           onClick={(e) => setShowModal(true) }
+  //         >
+  //           Create Account
+  //         </IonButton>
+  //       </div>
        
-      </div>
+  //     </div>
 
-    );
-  }
-  const Content_B =()=>{
-    return (
-      <div className="content_B">
+  //   );
+  // }
+  // const Content_B =()=>{
+  //   return (
+  //     <div className="content_B">
 
-        <IonItem>
-          <IonLabel position="floating">Email Address</IonLabel>
-          <IonInput
-            type="email"
-            onIonChange={(e:CustomEvent<any>) => {
-              setEmail(e.detail.value);
-            }}
-            name="email"
-          />
-        </IonItem>
-        <IonItem>
-          <IonLabel position="floating">Password</IonLabel>
-          <IonInput
-            type="password"
-            onIonChange={(e:CustomEvent<any>) => {
-              setPassword(e.detail.value);
-            }}
-            name="password"
-          />
-        </IonItem>
-        <div style={{ padding: 10, paddingTop: 20 }}>
-          <IonButton
-            expand="block"
-            style={{ margin: 14 }}
-            onClick={(e) => {
-              if (!e.currentTarget) {
-                return;
-              }
-              e.preventDefault();
-              _doLogin();
-            }}
-          >
-            {isAuth ? "ログインしています" : "ログイン"}
-          </IonButton>
-          <IonButton
-            expand="block"
-            style={{ margin: 14 }}
-            onClick={(e) => setShowModal(true) }
-          >
-            新規アカウントを作成
-          </IonButton>
-        </div>
+  //       <IonItem>
+  //         <IonLabel position="floating">Email Address</IonLabel>
+  //         <IonInput
+  //           type="email"
+  //           onIonChange={e => setEmail(e.detail.value!)}
+  //           name="email"
+  //           value ={email}
+  //         ></IonInput>
+  //       </IonItem>
+  //       <IonItem>
+  //         <IonLabel position="floating">Password</IonLabel>
+  //         <IonInput
+  //           type="password"
+  //           onIonChange={e =>  setPassword(e.detail.value!)}
+  //           name="password"
+  //           value={password}
+  //         ></IonInput>
+  //       </IonItem>
+  //       <div style={{ padding: 10, paddingTop: 20 }}>
+  //         <IonButton
+  //           expand="block"
+  //           style={{ margin: 14 }}
+  //           onClick={(e) => {
+  //             if (!e.currentTarget) {
+  //               return;
+  //             }
+  //             e.preventDefault();
+  //             _doLogin();
+  //           }}
+  //         >
+  //           {isAuth ? "ログインしています" : "ログイン"}
+  //         </IonButton>
+  //         <IonButton
+  //           expand="block"
+  //           style={{ margin: 14 }}
+  //           onClick={(e) => setShowModal(true) }
+  //         >
+  //           新規アカウントを作成
+  //         </IonButton>
+  //       </div>
 
-      </div>
-    );
-  }
+  //     </div>
+  //   );
+  // }
 
-  const RegisterModal =()=>{
-    return(
-    <IonModal isOpen={showModal} cssClass='regist-modal-class'>
-    <p>登録するには、メールアドレスを送信してください</p>
-    <div style={{display:'flex'}}>
-        <IonLabel >メールアドレス: &nbsp;</IonLabel>
-        <input
-          type="email"
-          style={{  width:'200px',height:30 }}
-          onChange={(e) => {
-            setEmail(e.target.value);
-          }}
-          name="email"
-        />
-      </div>
-      <div style={{display:'flex',marginTop:20}}>
-    <IonButton onClick={() => sendMail()}>送信</IonButton>
-    <IonButton onClick={() => setShowModal(false)}>キャンセル</IonButton>
-    </div>
-    <div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
-  </IonModal>
+  // const RegisterModal =()=>{
+  //   return(
+  //   <IonModal isOpen={showModal} cssClass='regist-modal-class'>
+  //   <p>登録するには、メールアドレスを送信してください</p>
 
-    );
-  }
+  //     <IonItem>
+  //       <IonLabel position="floating">メールアドレス</IonLabel>
+  //       <IonInput
+  //         type="email"
+  //         onIonChange={(e:CustomEvent) => {
+  //           setEmail(e.detail.value);
+  //         }}
+  //         name="email"
+  //         value ={email}
+  //       />
+  //     </IonItem>
+  //     <div style={{display:'flex',marginTop:20}}>
+  //   <IonButton onClick={() => sendMail()}>送信</IonButton>
+  //   <IonButton onClick={() => setShowModal(false)}>キャンセル</IonButton>
+  //   </div>
+  //   <div><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/></div>
+  // </IonModal>
+
+  //   );
+  // }
 
   const sendMail =() =>{
+     {
+      if(!emailComposer.isAvailable()) {
+        setErrorInfo({ showErrorToast: true, errMsg: "Mail Unavailable!" });
+      }
+    }
     let intro_text = email+"様、会員登録の申込みありがとうございます。次のリンクから会員登録を行ってください。";
     let link = 'http://purelabo777.netlify.app/register'
     let conf_text ="このメールに心当たりがない場合、削除してください";
@@ -192,6 +198,7 @@ const LoginPage = () => {
       body: mail_body,
       isHtml: true
     }
+    console.log(sendmail);
     emailComposer.open(sendmail);
     setShowModal(false);
   }
@@ -208,8 +215,83 @@ const LoginPage = () => {
       <IonText color="danger"  style={{ fontWeight: "500" }}>
           {initializationError && initializationError.message}
         </IonText>
-        {platform=='web'?<Content_A/>:<Content_B/>}
-        <RegisterModal />
+       
+      <div style={{display:'flex',marginTop:20}}>
+      <IonLabel >メールアドレス: &nbsp;</IonLabel>
+      <input
+        type="email"
+        style={{  width:'200px',height:30 }}
+        onChange={(e) => {
+          setEmail(e.target.value);
+        }}
+        value ={email}
+        name="email"
+      />
+      </div>
+      <div style={{display:'flex',marginTop:20}}>
+      <IonLabel >パスワード:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</IonLabel>
+      <input
+        style={{  width:'200px',height:30 }}
+        type="password"
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+        name="password"
+        value={password}
+      />
+      </div>
+      <div style={{ padding: 10, paddingTop: 20 }}>
+        <IonButton
+          color ="dark"
+          style={{ margin: 14 }}
+          onClick={(e) => {
+            if (!e.currentTarget) {
+              return;
+            }
+            e.preventDefault();
+            _doLogin();
+          }}
+        >
+          {isAuth ? "ログインしています" : "ログイン"}
+        </IonButton>
+        <IonButton
+        color="dark"
+          style={{ margin: 14 }}
+          onClick={(e) => setShowModal(true) }
+        >
+          Create Account
+        </IonButton>
+        </div>
+
+        <IonModal isOpen={showModal} cssClass='regist-modal-class'>
+          <p>登録するには、メールアドレスを送信してください</p>
+
+          <div style={{display:'flex',marginTop:20}}>
+          <IonLabel >メールアドレス:&nbsp;</IonLabel>
+          <input
+            type="email"
+            style={{  width:'200px',height:30 }}
+            onChange={(e) => {
+              setEmail(e.target.value);
+            }}
+            value ={email}
+            name="email"
+          />
+          </div>
+          <div style={{display:'flex',marginTop:20}}>
+        <IonButton 
+         color ="dark"
+         style={{ margin: 14 }}
+        onClick={() => sendMail()}>送信
+        </IonButton>
+        <IonButton
+         color ="dark"
+         style={{ margin: 14 }}
+         onClick={() => setShowModal(false)}>キャンセル
+         </IonButton>
+        </div>
+        <div style={{height:"300px"}}><br/></div>
+       </IonModal>
         <IonToast
           color="danger"
           isOpen={errorInfo.showErrorToast}
